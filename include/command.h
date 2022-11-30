@@ -4,6 +4,7 @@
 #pragma once
 #include <functional>
 #include <GLFW/glfw3.h>
+#include <imgui_lua.h>
 #include "views/view.h"
 #include "views/about.h"
 #include "views/debug.h"
@@ -47,6 +48,7 @@ class Command : public Views::View {
   void messageBox(std::string title, std::string msg);
 
   GLFWwindow *window = nullptr;
+  lua_State *L;
   bool m_openURL = false;
   bool m_dialog = false;
   std::string m_dialog_title = "Dialog";

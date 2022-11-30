@@ -4,6 +4,7 @@ project(imgui)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Freetype REQUIRED)
+find_package(Lua51 REQUIRED)
 
 add_library(imgui OBJECT
   source/imgui.cpp
@@ -14,12 +15,13 @@ add_library(imgui OBJECT
   source/imgui_impl_opengl3.cpp
   source/imgui_tables.cpp
   source/imgui_widgets.cpp
+  source/imgui_lua.cpp
   source/fonts/fontawesome.c
   source/fonts/unifont.c
 )
 
-target_include_directories(imgui PUBLIC include ${FREETYPE_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
-target_link_libraries(imgui PUBLIC ${CMAKE_DL_LIBS} ${FREETYPE_LIBRARIES} ${GLFW_LIBRARIES})
+target_include_directories(imgui PUBLIC include ${FREETYPE_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS} ${LUA_INCLUDE_DIR})
+target_link_libraries(imgui PUBLIC ${CMAKE_DL_LIBS} ${FREETYPE_LIBRARIES} ${GLFW_LIBRARIES} ${LUA_LIBRARIES})
 if(USE_OPENGL_ES2)
   target_compile_definitions(imgui PRIVATE IMGUI_IMPL_OPENGL_ES2)
   target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES})

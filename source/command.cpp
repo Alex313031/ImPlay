@@ -16,9 +16,17 @@ Command::Command(Config *config, Dispatch *dispatch, Mpv *mpv, GLFWwindow *windo
   settings = new Views::Settings(config, dispatch, mpv);
   contextMenu = new Views::ContextMenu(config, dispatch, mpv);
   commandPalette = new Views::CommandPalette(config, dispatch, mpv);
+
+  if (!(L = luaL_newstate())) {
+    std::cout << "Failed to create Lua state!" << std::endl;
+    std::abort();
+  }
+  luaL_openlibs(L);
+  LoadImguiBindings(L);
 }
 
 Command::~Command() {
+  lua_close(L);
   delete about;
   delete debug;
   delete quickview;
@@ -44,6 +52,8 @@ void Command::draw() {
   commandPalette->draw();
   drawOpenURL();
   drawDialog();
+
+  luaL_dostring(L, "imgui.Text('Hello, world!')");
 }
 
 void Command::execute(int n_args, const char **args_) {
